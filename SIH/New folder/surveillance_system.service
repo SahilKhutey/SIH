@@ -1,0 +1,12 @@
+[Unit]
+Description=Surveillance System Autostart
+After=network.target
+
+[Service]
+User=pi
+WorkingDirectory=/home/pi/surveillance_system
+ExecStart=/home/pi/surveillance_system/run_all.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

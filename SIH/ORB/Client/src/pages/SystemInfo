@@ -1,0 +1,22 @@
+import React, {useEffect, useState} from 'react';
+
+export default function SystemInfo({piBase}){
+  const [info, setInfo] = useState(null);
+  useEffect(()=>{
+    fetch(`${piBase}/api/system`).then(r=>r.json()).then(setInfo).catch(()=>{});
+  }, []);
+  return (
+    <div>
+      <h2>System Info</h2>
+      <div className="card">
+        {info ? (
+          <pre>{JSON.stringify(info, null, 2)}</pre>
+        ) : <p>Loading...</p>}
+      </div>
+      <div style={{marginTop:12}}>
+        <h3>Sketches</h3>
+        <img src="/mnt/data/2.jpg" alt="sketch2" style={{width:420}}/>
+      </div>
+    </div>
+  );
+}

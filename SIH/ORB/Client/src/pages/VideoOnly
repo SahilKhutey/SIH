@@ -1,0 +1,26 @@
+import React from 'react';
+export default function VideoOnly({piBase}){
+  return (
+    <div style={{display:'flex', gap:12}}>
+      <div style={{flex:2}}>
+        <h2>Live Video</h2>
+        <img alt="video" src={`${piBase}/video_feed`} style={{width:'100%', border:'1px solid #ccc'}}/>
+        <div style={{display:'flex', gap:12, marginTop:8}}>
+          <img src={`${piBase}/thermal_feed`} alt="thermal-thumb" style={{width:200, border:'1px solid #ccc'}}/>
+          <div className="card" style={{flex:1}}>
+            <h4>Data Panel</h4>
+            <p>Accuracy: —</p>
+            <p>Warnings: —</p>
+            <p>Location: —</p>
+          </div>
+        </div>
+      </div>
+      <aside style={{width:320}}>
+        <div className="card">
+          <h3>Alert Log</h3>
+          <div id="alerts">No alerts yet</div>
+        </div>
+      </aside>
+    </div>
+  );
+}

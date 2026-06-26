@@ -1,0 +1,10 @@
+:root{ --sidebar:240px; --gutter:14px; }
+*{ box-sizing:border-box; }
+body,html,#root{ height:100%; margin:0; font-family:Inter, Arial, sans-serif; }
+.app{ display:flex; height:100vh; }
+.sidebar{ width:var(--sidebar); padding:16px; border-right:1px solid #eee; background:#fafafa; }
+.sidebar ul{ padding:0; list-style:none; }
+.sidebar li{ margin:8px 0; }
+.main{ flex:1; padding:16px; overflow:auto; }
+.card{ background:#fff; border:1px solid #ddd; padding:12px; border-radius:6px; }
+.preview-img{ width:100%; max-height:300px; object-fit:cover; }

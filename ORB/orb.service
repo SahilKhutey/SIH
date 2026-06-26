@@ -1,0 +1,16 @@
+[Unit]
+Description=ORB Sensor-Fusion Surveillance Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/ORB
+ExecStart=/bin/bash /home/pi/ORB/run.sh
+Restart=on-failure
+RestartSec=5
+StandardOutput=inherit
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

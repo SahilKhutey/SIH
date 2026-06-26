@@ -1,0 +1,51 @@
+import React, {useRef, useEffect} from 'react';
+import { getSocket } from '../socket';
+
+export default function Overlay({piBase}){
+  const canvasRef = useRef();
+  useEffect(()=>{
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = `${piBase}/video_feed`;
+    img.onload = () => {
+      canvas.width = img.width || 640; canvas.height = img.height || 480;
+    };
+
+    let latestRadar = null;
+    const socket = getSocket();
+    if(socket){
+      socket.on('telemetry', (msg) => {
+        if(msg.type === 'radar') latestRadar = msg.payload;
+        if(msg.type === 'thermal') {
+          // optionally use thermal matrix to draw heat spot
+        }
+      });
+    }
+
+    function drawFrame(){
+      // draw latest video frame by drawing image (MJPEG not single frame; this is approximate)
+      try {
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      } catch(e){}
+      // overlay radar as circle
+      if(latestRadar){
+        const cx = canvas.width*0.7, cy = canvas.height*0.3;
+        ctx.fillStyle = 'rgba(255,0,0,0.25)';
+        ctx.beginPath(); ctx.arc(cx,cy,60,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle = 'white'; ctx.fillText(`d:${latestRadar.distance_m}m`, cx-30, cy);
+      }
+      requestAnimationFrame(drawFrame);
+    }
+    drawFrame();
+    return ()=> { if(socket) socket.off('telemetry'); };
+  }, []);
+  return (
+    <div>
+      <h2>Overlay</h2>
+      <canvas ref={canvasRef} style={{width:'100%', border:'1px solid #ccc'}} />
+      <p className="card">This compositing is simple — for production use, capture frames server-side or use WebRTC to pipe frames into a video element and then draw overlays in the canvas.</p>
+    </div>
+  );
+}
